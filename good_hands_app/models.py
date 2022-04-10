@@ -8,7 +8,6 @@ TYPE_FUNDATION = (
     (1, "fundation"),
     (2, "non-governmental organization "),
     (3, "lokal collection"),
-    (4, "lokal collection"),
 )
 
 
@@ -21,6 +20,9 @@ class Institution(models.Model):
     description = models.TextField()
     type = models.IntegerField(choices=TYPE_FUNDATION, default=1)
     categories = models.ManyToManyField(Category, blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
 
 class Donation(models.Model):
     quantity = models.IntegerField()
