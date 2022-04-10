@@ -90,7 +90,7 @@
               <div class="subtitle">Cel i misja: {{ fundation.description}}</div>
             </div>
 
-            <div class="col"><div class="text">ubrania, jedzenie, sprzęt AGD, meble, zabawki</div></div>
+            <div class="col"><div class="text">{% for category in fundation.categories.all %}{{ category }}{% endfor category %}</div></div>
           </li>
             {% endfor fundations_list %}
 
@@ -119,7 +119,7 @@
               <div class="subtitle">{{ organization.description}}</div>
             </div>
 
-            <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
+            <div class="col"><div class="text">{% for category in organization.categories.all %}{{ category }}{% endfor category %}</div></div>
           </li>
 
           {% endfor organization %}
@@ -147,7 +147,7 @@
               <div class="subtitle">{{ lokal.description}}</div>
             </div>
 
-            <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
+            <div class="col"><div class="text">{% for category in lokal.categories.all %} {{ category }}{% endfor category %}</div></div>
           </li>
             {% endfor lokal %}
 

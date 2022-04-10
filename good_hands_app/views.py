@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from good_hands_app.models import Donation, Institution, TYPE_FUNDATION
+from good_hands_app.models import Donation, Institution, Category
 # Create your views here.
 from django.views.generic import CreateView, View
 
@@ -23,7 +23,9 @@ class LandingPageView(View):
 
 class AddDonationView(View):
     def get(self, request):
-        return render(request, 'form.html')
+        categories = Category.objects.all()
+        instytutions = Institution.objects.all()
+        return render(request, 'form.html', {'categories': categories, 'instytutions': instytutions})
 
 
 class LoginView(View):
