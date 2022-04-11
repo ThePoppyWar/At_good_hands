@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 from good_hands_app.models import Donation, Institution, Category
@@ -28,11 +29,5 @@ class AddDonationView(View):
         return render(request, 'form.html', {'categories': categories, 'instytutions': instytutions})
 
 
-class LoginView(View):
-    def get(self, request):
-        return render(request, 'login.html')
 
 
-class RegisterView(View):
-    def get(self, request):
-        return render(request, 'register.html')
