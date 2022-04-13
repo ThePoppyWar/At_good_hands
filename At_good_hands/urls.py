@@ -21,7 +21,7 @@ from good_hands_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.LandingPageView.as_view(), name='index'),
+    path('', views.LandingPageView.as_view(), name='landing_page'),
     path('good_hands_app/', include('good_hands_app.urls')),
     path('accounts/', include('accounts.urls'))
 ]
