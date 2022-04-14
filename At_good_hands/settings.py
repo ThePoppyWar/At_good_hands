@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'At_good_hands.wsgi.application'
 DATABASES = {
     'default': {
         'HOST': '127.0.0.1',
-        'NAME': 'charity-donation',
+        'NAME': 'charity-donation-1',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'USER': 'postgres',
         'PASSWORD': 'coderslab',

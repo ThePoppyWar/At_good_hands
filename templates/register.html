@@ -8,24 +8,24 @@
       <form action="" method="post">
           {% csrf_token %}
         <div class="form-group">
-
-          <input type="text" name="name" placeholder="Imię" {{ form.first_name }}/>
+            {{ form.first_name }}
+{#          <input type="text" name="name" placeholder="Imię" />#}
         </div>
          <div class="form-group">
              {{ form.last_name }}
-          <input type="text" name="surname" placeholder="Nazwisko"/>
+{#          <input type="text" name="surname" placeholder="Nazwisko"/>#}
         </div>
         <div class="form-group">
                 {{ form.email }}
-          <input type="email" name="email" placeholder="Email" />
+{#          <input type="email" name="email" placeholder="Email" />#}
         </div>
         <div class="form-group">
-            {{ forms.pass_1 }}
-          <input type="password" name="password" placeholder="Hasło"/>
+            {{ form.pass_1 }}
+{#          <input type="password" name="password" placeholder="Hasło"/>#}
         </div>
         <div class="form-group">
-            {{ forms.pass_2 }}
-          <input type="password" name="password2" placeholder="Powtórz hasło"/>
+            {{ form.pass_2 }}
+{#          <input type="password" name="password2" placeholder="Powtórz hasło"/>#}
         </div>
 
         <div class="form-group form-group--buttons">
