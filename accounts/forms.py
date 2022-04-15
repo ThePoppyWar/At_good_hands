@@ -10,8 +10,10 @@ def pass_length_validation(value):
 
 
 class RegistrationForm(forms.ModelForm):
-    pass_1 = forms.CharField(widget=forms.PasswordInput(), validators=[pass_length_validation])
-    pass_2 = forms.CharField(widget=forms.PasswordInput(), validators=[pass_length_validation])
+    pass_1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': "password"}),
+                             validators=[pass_length_validation])
+    pass_2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': "password agine"}),
+                             validators=[pass_length_validation])
 
     class Meta:
         model = User
@@ -22,6 +24,11 @@ class RegistrationForm(forms.ModelForm):
             'pass_1',
             'pass_2'
         ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
+            'email': forms.TextInput(attrs={'placeholder': 'Email'}),
+        }
 
     def clean(self):
         data = super().clean()
@@ -35,17 +42,3 @@ class LoginForm(forms.Form):
     email = UsernameField(widget=forms.EmailInput(
         attrs={'autofocus': True, 'placeholder': "Email"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': "Password"}))
-
-    def get_invalid_login_error(self):
-        return ValidationError(
-            self.error_messages['invalid_login'],
-            code='invalid_login',
-            params={'email': self.username_field.verbose_name},
-        )
-
-    error_messages = {
-        'invalid_login': (
-            "Please enter a valid email address and password"
-        ),
-        'inactive': ("Account is inactive.")
-    }
