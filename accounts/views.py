@@ -10,7 +10,8 @@ from django.views.generic import CreateView
 
 class LoginView(View):
     def get(self, request):
-        return render(request, 'login.html')
+        form = LoginForm
+        return render(request, 'login.html', {'form':form})
 
 
 class RegisterView(CreateView):
@@ -24,3 +25,5 @@ class RegisterView(CreateView):
         self.object.set_password(form.cleaned_data['pass_1'])
         self.object.save()
         return ret_val
+
+
