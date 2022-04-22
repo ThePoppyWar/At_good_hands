@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -37,7 +38,7 @@ class Donation(models.Model):
     pick_up_date = models.DateField()
     pick_up_time = models.DateField()
     pick_up_comment = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, default=None)
 
     def __str__(self):
         return f"Worki:{self.quantity} dla {self.institution}"
