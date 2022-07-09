@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -22,11 +23,13 @@ class LandingPageView(View):
         "lokal_collection_list":lokal_collection_list})
 
 
-class AddDonationView(View):
+class AddDonationView(LoginRequiredMixin,View):
     def get(self, request):
         categories = Category.objects.all()
         instytutions = Institution.objects.all()
         return render(request, 'form.html', {'categories': categories, 'instytutions': instytutions})
+
+
 
 
 
