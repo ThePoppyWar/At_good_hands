@@ -1,0 +1,9 @@
+{% autoescape off %}
+Hello {{ user.first_name }},
+    You have completed the donation form in 'Oddam w dober ręce' - thank you!
+    Below for details:
+    Number of bags: {{ quantity }}
+    For: {{ organization }}
+    Pickup address: {{ address }} {{ zip_code }}, {{ city }}
+    Pickup date: {{ pick_up_date }}, o'clock: {{ pick_up-time }}
+{% endautoescape %}
