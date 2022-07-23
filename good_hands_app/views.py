@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -45,17 +46,15 @@ class LandingPageView(View):
         except EmptyPage:
             lokal_collection_list = paginator_local.page(paginator_local.num_pages)
 
-
         return render(request, 'index.html', {
             "quantity": quantity,
             "instytutions_donated": instytutions_donated,
             "fundations_list": fundations_list,
-        "non_governmental_list":non_governmental_list,
-        "lokal_collection_list":lokal_collection_list})
+            "non_governmental_list": non_governmental_list,
+            "lokal_collection_list": lokal_collection_list})
 
 
-
-class AddDonationView(LoginRequiredMixin,View):
+class AddDonationView(LoginRequiredMixin, View):
     def get(self, request):
         categories = Category.objects.all()
         instytutions = Institution.objects.all()
@@ -70,7 +69,7 @@ class AddDonationView(LoginRequiredMixin,View):
         phone_number = request.POST['phone']
         city = request.POST['city']
         zip_code = request.POST['postcode']
-        pick_up_date=request.POST['data']
+        pick_up_date = request.POST['data']
         pick_up_time = request.POST['time']
         pick_up_comment = request.POST['more_info']
         donation = Donation.objects.create(
@@ -85,13 +84,13 @@ class AddDonationView(LoginRequiredMixin,View):
             pick_up_comment=pick_up_comment,
             user=user,
         )
-        category_ids= request.POST.getlist('categories')
+        category_ids = request.POST.getlist('categories')
         categories = Category.objects.filter(id__in=category_ids)
         donation.categories.set(categories)
         donation.save()
 
         subject = "Potwierdzenie przekazania darowizny"
-        message = render_to_string('donation_form_confirmation_emali.html',{
+        message = render_to_string('donation_form_confirmation_emali.html', {
             'user': user,
             "quality": quantity,
             'organization': organization,
@@ -101,9 +100,7 @@ class AddDonationView(LoginRequiredMixin,View):
             'pick_up_date': pick_up_date,
             'pick_up_time': pick_up_time
         })
-
-
-
-
-
-
+        email_from = 'donation@donation.com'
+        email_to = [user.email]
+        send_mail(subject, message, email_from, email_to, fail_silently=False)
+        return render(request, 'form-confirmation.html')

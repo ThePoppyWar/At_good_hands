@@ -219,23 +219,123 @@ document.addEventListener("DOMContentLoaded", function() {
      * Show next or previous section etc.
      */
     updateForm() {
-      this.$step.innerText = this.currentStep;
+      const categories = document.querySelectorAll("input[name='categories']");
+      const bags = document.querySelector("input[name='bags']");
+      const organization = document.querySelector("input[name='organization']");
+      const address = document.querySelector("input[name='address']");
+      const city = document.querySelector("input[name='city']");
+      const postcode = document.querySelector("input[name='postcode']");
+      const phone = document.querySelector("input[name='phone']");
+      const date = document.querySelector("input[name='data']");
+      const time = document.querySelector("input[name='time']");
+      const more_info = document.querySelector("textarea[name='more_info']");
 
-      // TODO: Validation
+      const summary_bags = document.querySelector("#summary-bags");
+      const summary_organization = document.querySelector("#summary-organization");
+      const summary_address = document.querySelector("#summary-address");
+      const summary_date = document.querySelector('#summary-date');
 
-      this.slides.forEach(slide => {
-        slide.classList.remove("active");
+      const next4 = document.querySelector("div[data-step='4'] button.next-step");
 
-        if (slide.dataset.step == this.currentStep) {
-          slide.classList.add("active");
-        }
-      });
+      let formMessages = document.querySelector(".form-messages");
+      formMessages.forEach(message => {
+        message.innerHTML = ""
+      })
+
+      let formErrors = [];
+
+      if (this.currentStep === 2) {
+          const lngChecked = [...categories].filter(el => el.checked).length;
+          if (lngChecked === 0) {
+              formErrors.push("Wybierz przynajmniej jedną kategorię");
+          }
+      } else if (this.currentStep === 3) {
+          const bags_reg = /[0-9]/
+          if (!bags_reg.test(bags.value)) {
+              formErrors.push("Wypełnij poprawnie liczbę przekazywanych worków");
+          }
+      } else if (this.currentStep === 4) {
+          if (!organization) {
+              formErrors.push("Wybierz jedną z organizacji");
+          }
+      } else if (this.currentStep === 5) {
+                const postcode_reg = /^[0-9][0-9]-[0-9][0-9][0-9]$/
+                const phone_reg = /^[0-9]{9}$/
+                // const data_reg = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/
+                const data_reg = /^202[12]-[0-9]{2}-[0-9]{2}$/
+                const today = new Date()
+                let form_date = date.value.split("-")
+                form_date = new Date(form_date[0], form_date[1] - 1, form_date[2])
+                const time_reg = /^0[8-9]|1[0-9]|2[0-2]:[0-9]{2}$/
+                if (address.value.length <= 3) {
+                    formErrors.push("Wypełnij poprawnie pole z adresem");
+                }
+                if (city.value.length <= 3) {
+                    formErrors.push("Wypełnij poprawnie pole z nazwą miasta");
+                }
+                if (!postcode_reg.test(postcode.value)) {
+                    formErrors.push("Podaj poprawny kod pocztowy w formacie XX-XXX");
+                }
+                if (!phone_reg.test(phone.value)) {
+                    formErrors.push("Podaj poprawny nr telefonu w formacie 123456789");
+                }
+                if (!data_reg.test(date.value) || (form_date - today) <= 1) {
+                    formErrors.push("Wypełnij prawidłowo datę odbioru - odbiór możliwy od dnia jutrzejszego");
+                }
+                if (!time_reg.test(time.value)) {
+                    formErrors.push("Wypełnij prawidłowo godzinę odbioru - odbiór możliwy w godzinach 8:00 - 22:00");
+                }
+      }
+      if (formErrors.length) {
+
+            formMessages.forEach(message => {
+                message.innerHTML = `
+                <h3 class="form-error-title">Proszę poprawić następujące błędy: </h3>
+                <ul class="form-error-list">
+                ${formErrors.map(el => `<li>${el}</li>`).join("")}
+                </ul>
+                `;
+            })
+            this.currentStep--;
+        } else {
+            this.$step.innerText = this.currentStep;
+
+            this.slides.forEach(slide => {
+                slide.classList.remove("active");
+
+                if (slide.dataset.step == this.currentStep) {
+                    slide.classList.add("active");
+                }
+            });
 
       this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 6;
       this.$step.parentElement.hidden = this.currentStep >= 6;
 
-      // TODO: get data from inputs and show them in summary
-    }
+      next4.addEventListener('click', evt => {
+                    const category_names = [];
+                    categories.forEach(el => {
+                        if (el.checked) {
+                            category_names.push(el.dataset.category)
+                        }
+                    })
+                    summary_bags.innerText = `Liczba worków: ${bags.value}; Zawartość: ${category_names.join(', ').toLowerCase()}`;
+                    if (organization !== null) {
+                        summary_organization.innerText = `Dla: ${organization.dataset.institution}`;
+                    }
+                    summary_address.firstElementChild.innerText = `${address.value}`;
+                    summary_address.children[1].innerText = `${city.value}`;
+                    summary_address.children[2].innerText = `${postcode.value}`;
+                    summary_address.lastElementChild.innerText = `tel. ${phone.value}`;
+                    summary_date.firstElementChild.innerText = `${date.value.toString()}`;
+                    summary_date.children[1].innerText = `g. ${time.value.toString()}`;
+                    if (more_info.value) {
+                    summary_date.lastElementChild.innerText = `Uwagi dla kuriera: 
+                ${more_info.value}`;
+                    }
+                })
+            }
+        }
+
 
     /**
      * Submit form
@@ -253,3 +353,52 @@ document.addEventListener("DOMContentLoaded", function() {
     new FormSteps(form);
   }
 });
+
+/**
+ * * Filter categories in form step 3
+ */
+
+    const div_step3 = document.querySelectorAll("div[data-step='3'] div.form-group--checkbox");
+    const h_step3 = document.querySelector("div[data-step='3'] h4");
+    const checked_categories = document.querySelectorAll("div[data-step='1'] input");
+    const next1 = document.querySelector("div[data-step='1'] button.next-step");
+
+    if (next1 !== null) {
+        next1.addEventListener('click', evt => {
+            div_step3.forEach(el => {
+                el.style.display = 'block'
+            })
+            h_step3.innerText = ""
+            checked_categories.forEach(category => {
+                if (category.checked) {
+                    div_step3.forEach(el => {
+                        if (!(`category${category.value}` in el.dataset)) {
+                            el.style.display = 'none';
+                        }
+                    })
+                }
+            })
+
+            let isNone = [...div_step3].every(el => {
+                return el.style.display === 'none'
+            })
+
+            if (isNone) {
+                h_step3.innerHTML = "Brak w bazie organizacji zbierających przedmioty z podanych kategorii. <br>" +
+                "Dokonaj podziału na oddzielne darowizny."
+                    }
+                })
+            }
+/**
+ * Archive donations on user profile donations list
+ */
+
+const is_taken = document.querySelectorAll(".donation-list-is-taken");
+
+is_taken.forEach(el => {
+    // console.log(el.innerText)
+    if (el.innerText === "Odebrane") {
+        el.parentElement.classList.add('archived');
+        el.nextElementSibling.innerHTML = ""
+    }
+})

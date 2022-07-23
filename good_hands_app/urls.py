@@ -20,6 +20,4 @@ from good_hands_app import views
 urlpatterns = [
     path('', views.LandingPageView.as_view(), name='landing_page'),
     path('add_donation/', views.AddDonationView.as_view(), name='add_donation'),
-
-
 ]
