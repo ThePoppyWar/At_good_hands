@@ -57,7 +57,7 @@
         </div>
       </div>
 
-      <a href="#" class="btn btn--large">Załóż konto</a>
+       <a href="{% url 'register' %}" class="btn btn--large">Załóż konto</a>
     </section>
 
     <section id="about-us" class="about-us">
@@ -93,23 +93,44 @@
             <div class="col"><div class="text">{% for category in fundation.categories.all %}{{ category }}{% endfor category %}</div></div>
           </li>
             {% endfor fundations_list %}
+            </ul>
+            {#            Pagination#}
+            {% if fundations_list.has_other_pages %}
+                <ul class="help--slides-pagination">
+                    {% if fundations_list.has_previous %}
+                        <li class="btn btn--small btn--without-border"><a
+                                href="?page={{ fundations_list.previous_page_number }}#help">
+                            <
+                            poprzednia</a></li>
+                    {% endif %}
 
-        </ul>
-        <!-- Pagination
-        <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
-        </ul>
-        -->
-      </div>
+                    {% for page in fundations_list.paginator.page_range %}
+                        {% if fundations_list.number == page %}
+                            <li class="btn btn--small btn--without-border active"><a
+                                    href="?page={{ page }}#help"> {{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="btn btn--small btn--without-border"><a
+                                    href="?page={{ page }}#help"> {{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
 
+                    {% if fundations_list.has_next %}
+                        <li class="btn btn--small btn--without-border"><a
+                                href="?page={{ fundations_list.next_page_number }}#help">
+                            >
+                            następna</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
 
       <!-- SLIDE 2 -->
       <div class="help--slides" data-id="2">
         <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic officiis mollitia dolor, neque aspernatur accusamus debitis. Ducimus, officia. Quia, sunt illum! Non iste placeat ab ipsum alias
-          quos suscipit corporis!
+           W naszej bazie znajdziesz listę zweryfikowanych Organizacji Pozarządowych, z którymi współpracujemy.
+                Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.
         </p>
         <ul class="help--slides-items">
             {% for organization in non_governmental_list %}
@@ -124,21 +145,41 @@
 
           {% endfor organization %}
         </ul>
+{% if non_governmental_list.has_other_pages %}
+                <ul class="help--slides-pagination">
+                    {% if non_governmental_list.has_previous %}
+                        <li class="btn btn--small btn--without-border"><a
+                                href="?page={{ non_governmental_list.previous_page_number }}#help">
+                            <
+                            poprzednia</a></li>
+                    {% endif %}
 
-        <!-- Pagination
-        <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="4">4</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="5">5</a></li>
-        </ul>
-        -->
-      </div>
+                    {% for page in non_governmental_list.paginator.page_range %}
+                        {% if non_governmental_list.number == page %}
+                            <li class="btn btn--small btn--without-border active"><a
+                                    href="?page={{ page }}#help"> {{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="btn btn--small btn--without-border"><a
+                                    href="?page={{ page }}#help"> {{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if non_governmental_list.has_next %}
+                        <li class="btn btn--small btn--without-border"><a
+                                href="?page={{ non_governmental_list.next_page_number }}#help">
+                            >
+                            następna</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
 
       <!-- SLIDE 3 -->
       <div class="help--slides" data-id="3">
-        <p>Lorem ipsum dolor sit amet, his ocurreret persequeris ea, ad utinam laudem duo. Verterem adipisci partiendo eos ne, ea his reque quaeque recteque, ne quo lobortis intellegam.</p>
+        <p>W naszej bazie znajdziesz listę zweryfikowanych Zbiórek Publicznych, z którymi współpracujemy.
+                Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują</p>
         <ul class="help--slides-items">
             {% for lokal in lokal_collection_list %}
           <li>
@@ -152,7 +193,35 @@
             {% endfor lokal %}
 
         </ul>
+{% if lokal_collection_list.has_other_pages %}
+                <ul class="help--slides-pagination">
+                    {% if collections.has_previous %}
+                        <li><a class="btn btn--small btn--without-border" data-page="{{ lokal_collection_list.previous_page_number }}"
+                                href="?page={{ lokal_collection_list.previous_page_number }}#help">
+                            <
+                            poprzednia</a></li>
+                    {% endif %}
 
+                    {% for page in lokal_collection_list.paginator.page_range %}
+                        {% if lokal_collection_list.number == page %}
+                            <li><a class="btn btn--small btn--without-border" data-page="{{ page }}"
+                                    href="?page={{ page }}#help"> {{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li><a class="btn btn--small btn--without-border" data-page="{{ page }}"
+                                    href="?page={{ page }}#help"> {{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if lokal_collection_list.has_next %}
+                        <li><a class="btn btn--small btn--without-border" data-page="{{ lokal_collection_list.next_page_number }}"
+                                href="?page={{ lokal_collection_list.next_page_number }}#help">
+                            >
+                            następna</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
         <!-- Pagination
         <ul class="help--slides-pagination">
           <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
