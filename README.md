@@ -34,8 +34,8 @@ Technologies:
 
 First you should clone this repository:
 
-  git clone https://github.com/JKK86/charity_donation.git
-  cd  charity_donation
+  git clone git@github.com:ThePoppyWar/At_good_hands.git
+  cd  At_good_hands
 
 To run the project you should have Python 3 installed on your computer. Then it's recommended to create a virtual environment for your projects dependencies. To install virtual environment:
 
