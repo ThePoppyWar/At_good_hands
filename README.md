@@ -1,6 +1,7 @@
 # At_good_hands
 
 A simple web application built with Django Framework.
+
 #Table of contents
 
     General info
